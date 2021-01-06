@@ -23,7 +23,7 @@ exports.bicicleta_update_get = function(req, res){
 }
 
 exports.bicicleta_update_post = function(req, res){
-    var bici = Bicicleta.findById(req.params.id);
+    var bici = Bicicleta.findById(req.params.id); // entrega una copia local o una referencia al objeto?
     bici.id = req.body.id;
     bici.color = req.body.color;
     bici.modelo = req.body.modelo;
