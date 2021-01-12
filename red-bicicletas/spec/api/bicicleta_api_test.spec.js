@@ -2,7 +2,6 @@ var Bicicleta = require('../../models/bicicleta');
 var request = require('request');
 var server = require('../../bin/www');
 
-
 describe('Bicicleta API', () =>{
     describe('GET BICICLETAS /', ()=>{
         it('Status 200', () => {
@@ -20,22 +19,24 @@ describe('Bicicleta API', () =>{
     describe('POST BICICLETAS /create', ()=>{
         it('STATUS 200', (done) => {
             var headers = {'content-type': 'application/json'};
-            var aBici = '{"id": 10, "color": "rojo", "modelo": "urbana", "lat": -34, "lng": -54}';
+            var aBici = JSON.stringify({"id": 99, "color": "rojo", "modelo": "urbana", "lat": -34, "lng": -54});
             request.post({
                 headers: headers,
                 url: 'http://localhost:3000/api/bicicletas/create',
                 body: aBici
             }, function(error, response, body){
                 expect(response.statusCode).toBe(200);
-                expect(Bicicleta.findById(10).color).toBe("rojo");
+                expect(Bicicleta.findById(99).color).toBe("rojo");
                 done();
             })
         })
     })
     describe('PUT BICICLETAS /update', ()=>{
         it('STATUS 200', (done) => {
-            // expect(Bicicleta.findById(10).color).toBe("rojo");
-            // expect(Bicicleta.findById(10).modelo).toBe("urbana");
+            var a = new Bicicleta(10, 'negro', 'urbana', [32.0853123, 34.7818123]);
+            Bicicleta.add(a);
+            expect(Bicicleta.findById(10).color).toBe("negro");
+            expect(Bicicleta.findById(10).modelo).toBe("urbana");
             var headers = {'content-type': 'application/json'};
             var updatedBici =JSON.stringify({
                 "looking_id": 10,
