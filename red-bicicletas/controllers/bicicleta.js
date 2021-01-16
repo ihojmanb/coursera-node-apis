@@ -1,7 +1,9 @@
 var Bicicleta = require('../models/bicicleta');
 
 exports.bicicleta_list = function(req, res){
-    res.render('bicicletas/index',{bicis: Bicicleta.allBicis});
+    Bicicleta.allBicis().exec((err, bicis) => {
+        res.render('bicicletas/index', {bicis});
+    })
 }
 
 exports.bicicleta_create_get = function(req, res){
@@ -17,9 +19,11 @@ exports.bicicleta_create_post = function(req, res){
 }
 
 exports.bicicleta_update_get = function(req, res){
-    var bici = Bicicleta.findById(req.params.id);
-    
-    res.render('bicicletas/update', {bici});
+    Bicicleta.findById(req.params.id).exec((err, bici) => {
+        res.render('bicicletas/create', {
+          bici
+        });
+      })
 }
 
 exports.bicicleta_update_post = function(req, res){

@@ -5,17 +5,19 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var usersRouter = require('./routes/usuarios');
+var tokenRouter = require('./routes/token');
 var bicicletaRouter = require('./routes/bicicletas');
 var bicicletaAPIRouter = require('./routes/api/bicicletas');
 var usuariosAPIRouter = require('./routes/api/usuarios');
 
 var app = express();
 
-var mongoose = require('moongose');
+var mongoose = require('mongoose');
 var mongoDB = 'mongodb://localhost/red_bicicletas';
 
-mongoose.connect(mongoDB, {useNewUrlParser: true})
+mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.set('useCreateIndex', true);
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error: '));
@@ -32,8 +34,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/usuarios', usersRouter);
 app.use('/bicicletas', bicicletaRouter);
+app.use('/token', tokenRouter);
 app.use('/api/bicicletas', bicicletaAPIRouter);
 app.use('/api/usuarios', usuariosAPIRouter);
 
